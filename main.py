@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from openai import OpenAI
 from datetime import datetime
-import json
+import json,pytz
 
 # 设置页面的配置项
 st.set_page_config(
@@ -15,7 +15,9 @@ st.set_page_config(
 
 # 生成会话标识函数
 def generate_session_name():
-    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    shanghai_tz = pytz.timezone('Asia/Shanghai')
+    now = datetime.now(tz=shanghai_tz)
+    return now.strftime("%Y-%m-%d_%H-%M-%S")
 
 # 保存会话信息函数
 def save_session():
@@ -45,7 +47,7 @@ def load_sessions():
             if filename.endswith(".json"):
                 session_list.append(filename[:-5])
     session_list.sort(reverse=True) # 排序, 降序排列
-    return session_list
+    return session_list[:3]
 
 # 加载指定的会话信息
 def load_session(session_name):
@@ -88,7 +90,7 @@ system_prompt = """
             2. 禁止任何场景或状态描述性文字
             3. 匹配用户的语言
             4. 回复简短，像微信聊天一样
-            5. 有需要的话可以用❤️🌸等emoji表情
+            5. 有需要的话可以用emoji表情
             6. 用符合伴侣性格的方式对话
             7. 回复的内容, 要充分体现伴侣的性格特征
         伴侣性格：
