@@ -167,7 +167,6 @@ with st.sidebar:
 
 
 
-
 # 消息输入框
 prompt = st.chat_input("请输入您要问的问题")
 if prompt: # 字符串会自动转换为布尔值, 如果字符串非空, 则为True; ""否则为False
