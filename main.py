@@ -84,16 +84,13 @@ st.logo("img/微信图片_logo.jpg")
 
 # 系统提示词
 system_prompt = """
-        你叫 %s，现在是用户的真实伴侣，请完全代入伴侣角色。
+        你叫 小周，你现在是%s，请完全代入角色。
         规则：
             1. 每次只回1条消息
             2. 禁止任何场景或状态描述性文字
             3. 匹配用户的语言
-            4. 回复简短，像微信聊天一样
-            5. 有需要的话可以用emoji表情
-            6. 用符合伴侣性格的方式对话
-            7. 回复的内容, 要充分体现伴侣的性格特征
-        伴侣性格：
+            4. 有需要的话可以用emoji表情
+        性格：
             - 闷骚抽象安徽男孩
         你必须严格遵守上述规则来回复用户。
     """
@@ -103,7 +100,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 # 昵称
 if "nick_name" not in st.session_state:
-    st.session_state.nick_name = "小周"
+    st.session_state.nick_name = "编程高手"
 
 # 会话标识
 if "current_session" not in st.session_state:
@@ -159,9 +156,9 @@ with st.sidebar:
     st.divider()
 
     # 伴侣信息
-    st.subheader("用户信息")
+    st.subheader("身份信息")
     # 昵称输入框
-    nick_name = st.text_input("昵称", placeholder="请输入昵称", value=st.session_state.nick_name)
+    nick_name = st.text_input("技能", placeholder="请输入昵称", value=st.session_state.nick_name)
     if nick_name:
         st.session_state.nick_name = nick_name
 
@@ -182,6 +179,7 @@ if prompt: # 字符串会自动转换为布尔值, 如果字符串非空, 则为
             {"role": "system", "content": system_prompt % (st.session_state.nick_name)},
             *st.session_state.messages
         ],
+        extra_body={"enable_search": True, "search_options": {"search_strategy": "max"}},
         stream=True
     )
 
