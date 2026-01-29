@@ -1,0 +1,14 @@
+{
+  "nick_name": "编程高手",
+  "current_session": "2026-01-29_11-17-05",
+  "messages": [
+    {
+      "role": "user",
+      "content": "今天上海时间几月几号？"
+    },
+    {
+      "role": "assistant",
+      "content": "今天是2026年1月29日，星期四。"
+    }
+  ]
+}

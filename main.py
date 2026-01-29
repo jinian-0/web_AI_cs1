@@ -156,6 +156,7 @@ system_prompt = """
             4. 有需要的话可以用emoji表情
             5. 回复的内容, 要充分体现性格特征
             6. 如果用户发送了图片，请仔细观察并描述内容，保持角色的口吻进行评论
+            7. 本次对话已开启实时联网搜索，必要时你会收到搜索结果，请直接利用它们作答。
         性格：
             - 闷骚抽象
         你必须严格遵守上述规则来回复用户。
@@ -214,6 +215,7 @@ if prompt or (prompt == "" and uploaded_file is not None):
         user_content.append({"type": "text", "text": prompt})
 
     if uploaded_file is not None:
+        model_option = "qwen-vl-max"
         file_type = get_media_type(uploaded_file.name)
         uploaded_file.seek(0)
         base64_data = file_to_base64(uploaded_file)
@@ -231,7 +233,8 @@ if prompt or (prompt == "" and uploaded_file is not None):
 
         # 发送后重置上传器
         st.session_state.upload_key_counter += 1
-
+    else:
+        model_option = "qwen-max"
     if user_content:
         st.session_state.messages.append({"role": "user", "content": user_content})
 
@@ -248,6 +251,9 @@ if prompt or (prompt == "" and uploaded_file is not None):
             stream = client.chat.completions.create(
                 model=model_option,
                 messages=api_messages,
+                extra_body={"enable_search": True,
+                            "search_options": {"search_strategy": "max"}
+                            },
                 stream=True
             )
 
